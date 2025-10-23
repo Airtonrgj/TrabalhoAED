@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="analise-forense-aed">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
+    </SOURCES>
+  </library>
+</component>
