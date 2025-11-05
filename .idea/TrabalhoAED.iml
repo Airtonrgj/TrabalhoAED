@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="analise-forense-aed" level="project" />
+    <orderEntry type="library" name="jrt-fs" level="project" />
+    <orderEntry type="library" name="analise-forense-aed (2)" level="project" />
   </component>
 </module>
