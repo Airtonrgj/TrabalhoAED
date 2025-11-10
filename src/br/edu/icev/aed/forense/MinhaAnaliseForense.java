@@ -19,7 +19,14 @@ Retorne tipos exatos especificados na interface
     @Override
     public Set<String> encontrarSessoesInvalidas(String arquivo) throws IOException {
         // Implementar usando Map<String, Stack<String>>
-        Map<String, Stack<String>> sessoesDeEntrada = new HashMap<>();
+        // A tarefa do desafio é Encontrar Sessões Inválidas, portando a implementação pensada foi a de
+        // Uma pilha de login e uma de logaut usando map que server como um gerneciador de diretórios, ou seja o loguin do joão não interfere em nada o da Maria por exemplo
+
+        //Cria uma pilha para cada usuário basicamente
+        Map<String, Stack<String>> sessoesDeUsuario = new HashMap<>();
+
+        //vai coletar todos os IDs de sessões invalidas, sem nenhuma ordem especifica, por que isso vai ser implemntado no desafio 2
+        Set<String> sessoesInvalidas = new HashSet<>();
 
 
     }
