@@ -19,6 +19,9 @@ Retorne tipos exatos especificados na interface
     @Override
     public Set<String> encontrarSessoesInvalidas(String arquivo) throws IOException {
         // Implementar usando Map<String, Stack<String>>
+        Map<String, Stack<String>> sessoesDeEntrada = new HashMap<>();
+
+
     }
 
     @Override
