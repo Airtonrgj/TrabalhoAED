@@ -25,15 +25,29 @@ Retorne tipos exatos especificados na interface
         //Cria uma pilha para cada usuário basicamente
         Map<String, Stack<String>> sessoesDeUsuario = new HashMap<>();
 
-        //vai coletar todos os IDs de sessões invalidas, sem nenhuma ordem especifica, por que isso vai ser implemntado no desafio 2
+        //vai coletar todos os IDs de sessões invalidas, sem nenhuma ordem especifica, por que isso vai ser implemntado no desafio 2. coletas as sessões invalidas sem duplicataaas
         Set<String> sessoesInvalidas = new HashSet<>();
+
+        //como ele vai ler o arquivo CSV
+        try(BufferedReader arquivo = new BufferedReader(new FileReader(arquivo.csv))){
+            String linha = arquivo.readLine();   //ignora o cabeçalho
+
+            //busca da informções linha por linha até chegar na última Linha
+            while ((linha = arquivo.readLine()) != null){
+                String[] campo = linha.split(",");  //divide a string por virgula
+
+                String userID = campo[1];
+                String sessoesID = campo[2];
+                String tipoDeAcao = campo[3];
+            }
+        }
 
 
     }
 
     @Override
     public List<String> reconstruirLinhaTempo(String arquivo, String sessionId) throws IOException {
-        // Implementar usando Queue<String>
+        // Implementar usando Queue<String> 
     }
 
     @Override
