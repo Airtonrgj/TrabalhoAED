@@ -1,7 +1,13 @@
 package br.edu.icev.aed.forense;
 
+
+
+
+import java.io.BufferedReader;
 import java.io.*;
 import java.util.*;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class MinhaAnaliseForense implements AnaliseForenseAvancada {
 
@@ -17,7 +23,7 @@ Retorne tipos exatos especificados na interface
 */
 
     @Override
-    public Set<String> encontrarSessoesInvalidas(String arquivo) throws IOException {
+    public Set<String> encontrarSessoesInvalidas(String arquivo_logs) throws IOException {
         // Implementar usando Map<String, Stack<String>>
         // A tarefa do desafio é Encontrar Sessões Inválidas, portando a implementação pensada foi a de
         // Uma pilha de login e uma de logaut usando map que server como um gerneciador de diretórios, ou seja o loguin do joão não interfere em nada o da Maria por exemplo
@@ -29,16 +35,43 @@ Retorne tipos exatos especificados na interface
         Set<String> sessoesInvalidas = new HashSet<>();
 
         //como ele vai ler o arquivo CSV
-        try(BufferedReader arquivo = new BufferedReader(new FileReader(arquivo.csv))){
-            String linha = arquivo.readLine();   //ignora o cabeçalho
+        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo_logs))){
+            String linha = arquivos.readLine();   //ignora o cabeçalho
 
             //busca da informções linha por linha até chegar na última Linha
-            while ((linha = arquivo.readLine()) != null){
+            while ((linha = arquivos.readLine()) != null){
                 String[] campo = linha.split(",");  //divide a string por virgula
 
-                String userID = campo[1];
-                String sessoesID = campo[2];
-                String tipoDeAcao = campo[3];
+                String USER_ID = campo[1];
+                String SESSION_ID = campo[2];
+                String ACTION_TYPE = campo[3];
+
+                //se o usuario não tiver uma pilha ainda então ela é criada
+                if(!sessoesDeUsuario.containsKey(USER_ID)){
+                    sessoesDeUsuario.put(USER_ID, new Stack<>());
+                }
+                //aqui ele cria a pilha se necessário
+                Stack<String> sessoes = sessoesDeUsuario.get(USER_ID);
+
+                //Aqui é o caso do tipo de ação ser igual ou não a de LOGIN. Poderia ser feita baseada no logout tbm
+                if ("LOGIN".equals(ACTION_TYPE)){
+                    //SE JA TIVER UM LOGIN então vai para sessões invalidas, ja que não pode ter um login seguido de outro
+                    if (!sessoes.isEmpty()){
+                        sessoesInvalidas.add(SESSION_ID);
+                    }
+                    //se não tiver então ele empilha normalmente nas sessoes
+                    sessoes.push(SESSION_ID);
+                } else if ("LOGOUT".equals(ACTION_TYPE)) {
+                    if (sessoes.isEmpty() || !sessoes.peek().equals(SESSION_ID)){
+                        sessoesInvalidas.add(SESSION_ID);
+                    }else {
+                        //esse logout não tem problemas então é so desempilhar 
+                        sessoes.pop();
+
+                    }
+
+                    
+                }
             }
         }
 
@@ -48,21 +81,25 @@ Retorne tipos exatos especificados na interface
     @Override
     public List<String> reconstruirLinhaTempo(String arquivo, String sessionId) throws IOException {
         // Implementar usando Queue<String> 
+        return null;
     }
 
     @Override
     public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
         // Implementar usando PriorityQueue<Alerta>
+        return null;
     }
 
     @Override
     public Map<Long, Long> encontrarPicosTransferencia(String arquivo) throws IOException {
         // Implementar usando Stack (Next Greater Element)
+        return null;
     }
 
     @Override
     public Optional<List<String>> rastrearContaminacao(String arquivo, String origem, String destino) throws IOException {
         // Implementar usando BFS em grafo
+        return null;
 
     }
 }
