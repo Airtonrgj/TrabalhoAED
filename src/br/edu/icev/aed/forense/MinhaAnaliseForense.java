@@ -38,7 +38,7 @@ Retorne tipos exatos especificados na interface
         try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo_logs))){
             String linha = arquivos.readLine();   //ignora o cabeçalho
 
-            //busca da informções linha por linha até chegar na última Linha
+            //busca da informações linha por linha até chegar na última Linha
             while ((linha = arquivos.readLine()) != null){
                 String[] campo = linha.split(",");  //divide a string por virgula
 
