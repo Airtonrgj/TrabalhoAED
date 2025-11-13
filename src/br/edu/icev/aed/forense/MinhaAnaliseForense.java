@@ -75,6 +75,7 @@ Retorne tipos exatos especificados na interface
             }
         }
 
+        return sessoesInvalidas;
 
     }
 
