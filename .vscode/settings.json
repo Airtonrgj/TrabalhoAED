@@ -1,8 +1,14 @@
 {
+<<<<<<< HEAD
     "java.project.sourcePaths": [
         "src"
     ],
     "java.project.referencedLibraries": [
         "/home/airton/Projetos_Faculdade/TrabalhoAED/TrabalhoAED/lib/analise-forense-aed.jar"
+=======
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+>>>>>>> 185d1bcea59d63e071e3bc1fad5f720d98b9ac37
     ]
 }
