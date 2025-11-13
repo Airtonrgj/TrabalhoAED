@@ -67,16 +67,13 @@ Retorne tipos exatos especificados na interface
                     }else {
                         //esse logout não tem problemas então é so desempilhar 
                         sessoes.pop();
-
                     }
 
                     
                 }
             }
         }
-
         return sessoesInvalidas;
-
     }
 
     @Override
