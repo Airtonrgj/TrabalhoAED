@@ -131,6 +131,10 @@ Retorne tipos exatos especificados na interface
     @Override
     public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
         // Implementar usando PriorityQueue<Alerta>
+        //Compara a severidade: do mais ao menos severo.
+        PriorityQueue<Alerta> filaPrioridade = new PriorityQueue<>(
+                (a, b) -> Integer.compare(b.severidade, a.severidade)
+        );
 
         return null;
     }
