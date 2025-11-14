@@ -78,13 +78,60 @@ Retorne tipos exatos especificados na interface
 
     @Override
     public List<String> reconstruirLinhaTempo(String arquivo, String sessionId) throws IOException {
-        // Implementar usando Queue<String> 
+        // Implementar usando Queue<String>
+        @Override
+
+            Queue<String> filaAcoes = new LinkedList<>();
+
+            // Armazena na lista antes de organizar.
+            List<LogEvento> eventos = new ArrayList<>();
+
+            try (BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))) {
+                String linha = arquivos.readLine(); // ignora o cabeçalho
+
+                while ((linha = arquivos.readLine()) != null) {
+
+                    String[] campo = linha.split(",");
+
+                    String TIMESTAMP = campo[0];
+                    String SESSION_ID = campo[2];
+                    String ACTION_TYPE = campo[3];
+
+                    // Armazena para análise.
+                    if (SESSION_ID.equals(sessionId)) {
+                        eventos.add(new LogEvento(TIMESTAMP, ACTION_TYPE));
+                    }
+                }
+            }
+
+            // Implementa a ordem cronológica.
+            Collections.sort(eventos, Comparator.comparing(e -> e.timestamp));
+
+            for (LogEvento e : eventos) {
+                filaAcoes.add(e.actionType);
+            }
+
+            return new ArrayList<>(filaAcoes);
+        }
+
+// Classe auxiliar de armazenamento.
+        class LogEvento {
+            String timestamp;
+            String actionType;
+
+            public LogEvento(String timestamp, String actionType) {
+                this.timestamp = timestamp;
+                this.actionType = actionType;
+            }
+        }
+
         return null;
     }
 
     @Override
     public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
         // Implementar usando PriorityQueue<Alerta>
+
         return null;
     }
 
