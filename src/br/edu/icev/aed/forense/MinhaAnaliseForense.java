@@ -23,7 +23,7 @@ Retorne tipos exatos especificados na interface
 */
 
     @Override
-    public Set<String> encontrarSessoesInvalidas(String arquivo_logs) throws IOException {
+    public Set<String> encontrarSessoesInvalidas(String arquivo) throws IOException {
         // Implementar usando Map<String, Stack<String>>
         // A tarefa do desafio é Encontrar Sessões Inválidas, portando a implementação pensada foi a de
         // Uma pilha de login e uma de logaut usando map que server como um gerneciador de diretórios, ou seja o loguin do joão não interfere em nada o da Maria por exemplo
@@ -35,7 +35,7 @@ Retorne tipos exatos especificados na interface
         Set<String> sessoesInvalidas = new HashSet<>();
 
         //como ele vai ler o arquivo CSV
-        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo_logs))){
+        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))){
             String linha = arquivos.readLine();   //ignora o cabeçalho
 
             //busca da informações linha por linha até chegar na última Linha
@@ -77,14 +77,42 @@ Retorne tipos exatos especificados na interface
     }
 
     @Override
-    public List<String> reconstruirLinhaTempo(String arquivo, String sessionId) throws IOException {
-        // Implementar usando Queue<String> 
+    public List<String> reconstruirLinhaTempo(String arquivo_logs, String sessionId) throws IOException {
+        // Implementar usando Queue<String>
         return null;
     }
 
     @Override
     public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
         // Implementar usando PriorityQueue<Alerta>
+        Comparator<Alerta> comparador = new Comparator<Alerta>() {
+            @Override
+            public int compare(Alerta alerta1, Alerta alerta2) {
+                //retorna em ordem decrescente ou seja, o de maior priorridade e depois o de menor prioridade
+                return alerta2.getSeverityLevel() - alerta1.getSeverityLevel();
+            }
+        };
+
+        PriorityQueue<Alerta> filaDePrioridadeDeAlertas = new PriorityQueue<>(comparador);
+        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))) {
+            String linha = arquivos.readLine();   //ignora o cabeçalho como nas outras
+
+            int severityLevel = 0;
+            while ((linha = arquivos.readLine()) != null) {
+                String[] campo = linha.split(",");
+
+                //extrai todos os campos para mostrar
+                long timestamp = Long.parseLong(campo[0]);
+                String userId = campo[1];
+                String sessionId = campo[2];
+                String actionType = campo[3];
+                String targetResource = campo[4];
+                severityLevel = Integer.parseInt(campo[5]);
+                long bytesTransferred = Long.parseLong(campo[6]);
+
+            }
+
+        }
         return null;
     }
 
