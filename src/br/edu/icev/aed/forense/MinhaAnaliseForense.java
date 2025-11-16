@@ -1,17 +1,13 @@
 package br.edu.icev.aed.forense;
 
-
-
-
 import java.io.BufferedReader;
-import java.io.*;
-import java.util.*;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.*;
 
 public class MinhaAnaliseForense implements AnaliseForenseAvancada {
 
-    public MinhaAnaliseForense(){
+    public MinhaAnaliseForense() {
 
     }
 
@@ -35,11 +31,11 @@ Retorne tipos exatos especificados na interface
         Set<String> sessoesInvalidas = new HashSet<>();
 
         //como ele vai ler o arquivo CSV
-        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo_logs))){
+        try (BufferedReader arquivos = new BufferedReader(new FileReader(arquivo_logs))) {
             String linha = arquivos.readLine();   //ignora o cabeçalho
 
             //busca da informações linha por linha até chegar na última Linha
-            while ((linha = arquivos.readLine()) != null){
+            while ((linha = arquivos.readLine()) != null) {
                 String[] campo = linha.split(",");  //divide a string por virgula
 
                 String USER_ID = campo[1];
@@ -47,29 +43,29 @@ Retorne tipos exatos especificados na interface
                 String ACTION_TYPE = campo[3];
 
                 //se o usuario não tiver uma pilha ainda então ela é criada
-                if(!sessoesDeUsuario.containsKey(USER_ID)){
+                if (!sessoesDeUsuario.containsKey(USER_ID)) {
                     sessoesDeUsuario.put(USER_ID, new Stack<>());
                 }
                 //aqui ele cria a pilha se necessário
                 Stack<String> sessoes = sessoesDeUsuario.get(USER_ID);
 
                 //Aqui é o caso do tipo de ação ser igual ou não a de LOGIN. Poderia ser feita baseada no logout tbm
-                if ("LOGIN".equals(ACTION_TYPE)){
+                if ("LOGIN".equals(ACTION_TYPE)) {
                     //SE JA TIVER UM LOGIN então vai para sessões invalidas, ja que não pode ter um login seguido de outro
-                    if (!sessoes.isEmpty()){
+                    if (!sessoes.isEmpty()) {
                         sessoesInvalidas.add(SESSION_ID);
                     }
                     //se não tiver então ele empilha normalmente nas sessoes
                     sessoes.push(SESSION_ID);
                 } else if ("LOGOUT".equals(ACTION_TYPE)) {
-                    if (sessoes.isEmpty() || !sessoes.peek().equals(SESSION_ID)){
+                    if (sessoes.isEmpty() || !sessoes.peek().equals(SESSION_ID)) {
                         sessoesInvalidas.add(SESSION_ID);
-                    }else {
+                    } else {
                         //esse logout não tem problemas então é so desempilhar 
                         sessoes.pop();
                     }
 
-                    
+
                 }
             }
         }
@@ -79,31 +75,29 @@ Retorne tipos exatos especificados na interface
     @Override
     public List<String> reconstruirLinhaTempo(String arquivo, String sessionId) throws IOException {
         // Implementar usando Queue<String>
-        @Override
 
-            Queue<String> filaAcoes = new LinkedList<>();
+        Queue<String> filaAcoes = new LinkedList<>();
 
-            // Armazena na lista antes de organizar.
-            List<LogEvento> eventos = new ArrayList<>();
+        // Armazena na lista antes de organizar.
+        List<LogEvento> eventos = new ArrayList<>();
 
-            try (BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))) {
-                String linha = arquivos.readLine(); // ignora o cabeçalho
+        try {
+            BufferedReader arquivos = new BufferedReader(new FileReader(arquivo));
+            String linha = arquivos.readLine();
+            while (linha != null) {
+                String[] campo = linha.split(",");
 
-                while ((linha = arquivos.readLine()) != null) {
+                String TIMESTAMP = campo[0];
+                String SESSION_ID = campo[2];
+                String ACTION_TYPE = campo[3];
 
-                    String[] campo = linha.split(",");
-
-                    String TIMESTAMP = campo[0];
-                    String SESSION_ID = campo[2];
-                    String ACTION_TYPE = campo[3];
-
-                    // Armazena para análise.
-                    if (SESSION_ID.equals(sessionId)) {
-                        eventos.add(new LogEvento(TIMESTAMP, ACTION_TYPE));
-                    }
+                // Armazena para análise.
+                if (SESSION_ID.equals(sessionId)) {
+                    eventos.add(new LogEvento(TIMESTAMP, ACTION_TYPE));
                 }
-            }
 
+                linha = arquivos.readLine();
+            }
             // Implementa a ordem cronológica.
             Collections.sort(eventos, Comparator.comparing(e -> e.timestamp));
 
@@ -111,45 +105,49 @@ Retorne tipos exatos especificados na interface
                 filaAcoes.add(e.actionType);
             }
 
-            return new ArrayList<>(filaAcoes);
+        } catch (Exception e) {
+            System.out.println("Erro ao ler o arquivo csv!");
         }
 
-// Classe auxiliar de armazenamento.
-        class LogEvento {
-            String timestamp;
-            String actionType;
+        return new ArrayList<>(filaAcoes);
+    }
 
-            public LogEvento(String timestamp, String actionType) {
-                this.timestamp = timestamp;
-                this.actionType = actionType;
-            }
+    // Classe auxiliar de armazenamento.
+    class LogEvento {
+        String timestamp;
+        String actionType;
+
+        public LogEvento(String timestamp, String actionType) {
+            this.timestamp = timestamp;
+            this.actionType = actionType;
         }
-
-        return null;
     }
 
-    @Override
-    public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
-        // Implementar usando PriorityQueue<Alerta>
-        //Compara a severidade: do mais ao menos severo.
-        PriorityQueue<Alerta> filaPrioridade = new PriorityQueue<>(
-                (a, b) -> Integer.compare(b.severidade, a.severidade)
-        );
-
         return null;
-    }
+}
 
-    @Override
-    public Map<Long, Long> encontrarPicosTransferencia(String arquivo) throws IOException {
-        // Implementar usando Stack (Next Greater Element)
-        return null;
-    }
+@Override
+public List<Alerta> priorizarAlertas(String arquivo, int n) throws IOException {
+    // Implementar usando PriorityQueue<Alerta>
+    //Compara a severidade: do mais ao menos severo.
+    PriorityQueue<Alerta> filaPrioridade = new PriorityQueue<>(
+            (a, b) -> Integer.compare(b.severidade, a.severidade)
+    );
 
-    @Override
-    public Optional<List<String>> rastrearContaminacao(String arquivo, String origem, String destino) throws IOException {
-        // Implementar usando BFS em grafo
-        return null;
+    return null;
+}
 
-    }
+@Override
+public Map<Long, Long> encontrarPicosTransferencia(String arquivo) throws IOException {
+    // Implementar usando Stack (Next Greater Element)
+    return null;
+}
+
+@Override
+public Optional<List<String>> rastrearContaminacao(String arquivo, String origem, String destino) throws IOException {
+    // Implementar usando BFS em grafo
+    return null;
+
+}
 }
 
