@@ -1,8 +1,7 @@
 package br.edu.icev.aed.forense;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.*;
 
 public class MinhaAnaliseForense implements AnaliseForenseAvancada {
@@ -31,11 +30,11 @@ Retorne tipos exatos especificados na interface
         Set<String> sessoesInvalidas = new HashSet<>();
 
         //como ele vai ler o arquivo CSV
-        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))){
+        try (BufferedReader arquivos = new BufferedReader(new FileReader("input/arquivo_logs.csv"))) {
             String linha = arquivos.readLine();   //ignora o cabeçalho
 
             //busca da informações linha por linha até chegar na última Linha
-            while ((linha = arquivos.readLine()) != null){
+            while ((linha = arquivos.readLine()) != null) {
                 String[] campo = linha.split(",");  //divide a string por virgula
 
                 String USER_ID = campo[1];
@@ -43,29 +42,29 @@ Retorne tipos exatos especificados na interface
                 String ACTION_TYPE = campo[3];
 
                 //se o usuario não tiver uma pilha ainda então ela é criada
-                if(!sessoesDeUsuario.containsKey(USER_ID)){
+                if (!sessoesDeUsuario.containsKey(USER_ID)) {
                     sessoesDeUsuario.put(USER_ID, new Stack<>());
                 }
                 //aqui ele cria a pilha se necessário
                 Stack<String> sessoes = sessoesDeUsuario.get(USER_ID);
 
                 //Aqui é o caso do tipo de ação ser igual ou não a de LOGIN. Poderia ser feita baseada no logout tbm
-                if ("LOGIN".equals(ACTION_TYPE)){
+                if ("LOGIN".equals(ACTION_TYPE)) {
                     //SE JA TIVER UM LOGIN então vai para sessões invalidas, ja que não pode ter um login seguido de outro
-                    if (!sessoes.isEmpty()){
+                    if (!sessoes.isEmpty()) {
                         sessoesInvalidas.add(SESSION_ID);
                     }
                     //se não tiver então ele empilha normalmente nas sessoes
                     sessoes.push(SESSION_ID);
                 } else if ("LOGOUT".equals(ACTION_TYPE)) {
-                    if (sessoes.isEmpty() || !sessoes.peek().equals(SESSION_ID)){
+                    if (sessoes.isEmpty() || !sessoes.peek().equals(SESSION_ID)) {
                         sessoesInvalidas.add(SESSION_ID);
-                    }else {
+                    } else {
                         //esse logout não tem problemas então é so desempilhar 
                         sessoes.pop();
                     }
 
-                    
+
                 }
             }
         }
@@ -138,7 +137,7 @@ Retorne tipos exatos especificados na interface
         };
 
         PriorityQueue<Alerta> filaDePrioridadeDeAlertas = new PriorityQueue<>(comparador);
-        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))) {
+        try (BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))) {
             String linha = arquivos.readLine();   //ignora o cabeçalho como nas outras
 
             int severityLevel = 0;
@@ -172,5 +171,6 @@ Retorne tipos exatos especificados na interface
         return null;
 
     }
-}
 
+
+}
