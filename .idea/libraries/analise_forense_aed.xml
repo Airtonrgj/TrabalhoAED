@@ -7,7 +7,6 @@
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/analise-forense-aed.jar!/" />
     </SOURCES>
   </library>
 </component>
