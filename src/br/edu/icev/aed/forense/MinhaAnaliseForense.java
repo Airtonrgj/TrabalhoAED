@@ -1,6 +1,7 @@
 package br.edu.icev.aed.forense;
 
 
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -120,9 +121,57 @@ Retorne tipos exatos especificados na interface
     @Override
     public Optional<List<String>> rastrearContaminacao(String arquivo, String origem, String destino) throws IOException {
         // Implementar usando BFS em grafo
-        return null;
+        // Agrupa recursos acessados por cada sessão
+        Map<String, List<String>> acessosPorSessao = new HashMap<>();
 
+        // Grafo: recurso de origem → lista de recursos destino
+        Map<String, List<String>> grafo = new HashMap<>();
+
+        try(BufferedReader arquivos = new BufferedReader(new FileReader(arquivo))){
+            String linha = arquivos.readLine();//pula o cabeçalho
+
+            while ((linha = arquivos.readLine()) != null){
+                String[] campo = linha.split(",");
+
+
+                String sessionId = campo[2];
+                String targetResource = campo[4];
+
+                //vê se não tem uma lista criada no mapa
+                if(!acessosPorSessao.containsKey(sessionId)){
+                    //caso esteja vazia cria uma nova lista
+                    acessosPorSessao.put(sessionId, new ArrayList<>());
+                }
+                acessosPorSessao.get(sessionId).add(targetResource);
+
+            }
+        }
+        for (List<String> listaDeAcesso : acessosPorSessao.values()){
+            // Percorre a lista até o PENÚLTIMO item
+            for (int i = 0; i < listaDeAcesso.size() - 1; i++) {
+                String origemA = listaDeAcesso.get(i);
+                String chegadaB = listaDeAcesso.get(i + 1);
+
+                //verifica se o ponto de origemA já tem uma lista de vizinhos
+                if(!grafo.containsKey(origemA)){
+                    grafo.put(origemA, new ArrayList<>());
+                }
+                //adiciona a conexão
+                grafo.get(origemA).add(chegadaB);
+            }
+        }
+        //preparando para buscar no grafp
+        Queue<String> filaDeBusca = new LinkedList<>();
+        filaDeBusca.add(origem);
+
+        Map<String, String> antecessores = new HashMap<>();
+        //o primeiro não tem antecessores
+        antecessores.put(origem, null);
+
+        boolean encontrou = false;
+
+
+
+            }
+        }
     }
-
-
-}
